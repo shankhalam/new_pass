@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 
 # --------------------------VARIABLES------------------------------------------- #
 BLUE = "#632780"
@@ -14,13 +15,24 @@ def save():
     user_name = user_entry.get()
     pass_word = password_entry.get()
 
-    with open('data.txt', 'a') as file:
-        entered_data = f"{web_entry} | {user_name} | {pass_word}\n"
-        file.writelines(entered_data)
-        website_entry.delete(0, END)
-        user_entry.delete(0, END)
-        password_entry.delete(0, END)
-        file.close()
+    if len(web_entry) == 0:
+        messagebox.showwarning(title="Empty Website", message="Please fill up Website field")
+    elif len(user_name) == 0:
+        messagebox.showwarning(title="Empty Username/Email", message="Please fill up Username field")
+    elif len(pass_word) == 0:
+        messagebox.showwarning(title="Empty Password", message="Please fill up Password field")
+    else:
+        save_info = messagebox.askokcancel(title=web_entry, message=f"Save these details:\nEmail: {web_entry}"
+                                                                    f"\nPassword: {pass_word}")
+
+        if save_info:
+            with open('data.txt', 'a') as file:
+                entered_data = f"{web_entry} | {user_name} | {pass_word}\n"
+                file.writelines(entered_data)
+                website_entry.delete(0, END)
+                user_entry.delete(0, END)
+                password_entry.delete(0, END)
+                file.close()
 
 
 # ---------------------------- UI SETUP ------------------------------- #
