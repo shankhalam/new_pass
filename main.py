@@ -51,24 +51,33 @@ def save():
     else:
         new_data = {
             web_entry: {
-                "Email" : user_name,
+                "Email": user_name,
                 "Password": pass_word
             }
         }
-
-        with open('data.json', 'r') as file:
-            data = json.load(file)
+        # if Database not exist,
+        try:
+            with open('data.json', 'r') as file:
+                data = json.load(file)
+        except FileNotFoundError:
+            with open('data.json', 'w') as file:
+                json.dump(new_data, file, indent=4)
+                messagebox.showinfo(title="Success", message="Your entry was saved successfully.")
+        else:
             data.update(new_data)
 
-        with open('data.json', 'w') as file:
-            json.dump(data, file, indent=4)
-
+            with open('data.json', 'w') as file:
+                json.dump(data, file, indent=4)
+                messagebox.showinfo(title="Success", message="Your entry was saved successfully.")
+        finally:
             website_entry.delete(0, END)
             user_entry.delete(0, END)
             password_entry.delete(0, END)
 
-            messagebox.showinfo(title="Success", message="Your entry was saved successfully.")
-            file.close()
+
+# ---------------------------- SEARCH DATA --------------------------- #
+def find_data():
+    pass
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -80,7 +89,7 @@ window.config(padx=50, pady=50)
 canvas = Canvas(width=200, height=200)
 logo_image = PhotoImage(file="newpass_img.png")
 canvas.create_image(100, 100, image=logo_image)
-canvas.grid(row=0, column=1)
+canvas.grid(row=0, column=1, pady=10)
 
 # Labels
 website = Label(text="Website :")
@@ -91,8 +100,8 @@ password = Label(text="Password :")
 password.grid(row=3, column=0)
 
 # Entries
-website_entry = Entry(width=52)
-website_entry.grid(row=1, column=1, columnspan=2)
+website_entry = Entry(width=33)
+website_entry.grid(row=1, column=1)
 website_entry.focus()
 user_entry = Entry(width=52)
 user_entry.grid(row=2, column=1, columnspan=2)
@@ -103,6 +112,8 @@ password_entry.grid(row=3, column=1)
 generate_pass = Button(text="Generate Password", command=generate_password, bg=DARK_BLUE, fg=WHITE)
 generate_pass.grid(row=3, column=2)
 save_data = Button(text="Save Data", width=44, bg=BLUE, fg=WHITE, command=save)
-save_data.grid(row=4, column=1, columnspan=2)
+save_data.grid(row=4, column=1, columnspan=2, pady=10)
+search_data = Button(text="Search Website", command=find_data, bg=DARK_BLUE, fg=WHITE, width=14)
+search_data.grid(row=1, column=2)
 
 window.mainloop()
