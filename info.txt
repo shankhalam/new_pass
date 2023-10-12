@@ -1,0 +1,7 @@
+software_name	: New Pass
+version_number	: 1.0.0
+developed_by	: Shan Khalam
+
+-----------------------------------------------
+Thank you for using New Pass Password Manager.
+-----------------------------------------------
