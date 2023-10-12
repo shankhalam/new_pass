@@ -85,26 +85,31 @@ def save():
 # ---------------------------- SEARCH DATA --------------------------- #
 def find_data():
     web_entry = website_entry.get().lower()
-    try:
-        with open('data.json', 'r') as file:
-            search_file = json.load(file)
-    except FileNotFoundError:
-        messagebox.showwarning(title="Error", message="No data file found.")
+    if len(web_entry) == 0:
+        messagebox.showwarning(title="Empty", message="Empty field. Type Website to search.")
     else:
-        if web_entry in search_file:
-            email = search_file[web_entry]["Email"]
-            password = search_file[web_entry]["Password"]
-            messagebox.showinfo(title=web_entry, message=f"Email: {email}\nPassword: {password}"
-                                                         f"\n--Password copied to clipboard--")
-            pc.copy(password)
+        try:
+            with open('data.json', 'r') as file:
+                search_file = json.load(file)
+        except FileNotFoundError:
+            messagebox.showwarning(title="Error", message="No data file found.")
         else:
-            messagebox.showwarning(title="No Entry", message=f"No details for {web_entry} Found.")
+            if web_entry in search_file:
+                email = search_file[web_entry]["Email"]
+                password = search_file[web_entry]["Password"]
+                messagebox.showinfo(title=web_entry, message=f"Email: {email}\nPassword: {password}"
+                                                             f"\n---------------------------------------"
+                                                             f"\nPassword copied to clipboard")
+                pc.copy(password)
+            else:
+                messagebox.showwarning(title="No Entry", message=f"No details for {web_entry} Found.")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("New Pass - Password Manager")
 window.config(padx=50, pady=50)
+window.iconbitmap("icon.ico")
 
 # Canvas
 canvas = Canvas(width=200, height=200)
