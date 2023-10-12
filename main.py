@@ -38,7 +38,7 @@ def generate_password():
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
-    web_entry = website_entry.get()
+    web_entry = website_entry.get().lower()
     user_name = user_entry.get()
     pass_word = password_entry.get()
 
@@ -64,11 +64,18 @@ def save():
                 json.dump(new_data, file, indent=4)
                 messagebox.showinfo(title="Success", message="Your entry was saved successfully.")
         else:
-            data.update(new_data)
-
-            with open('data.json', 'w') as file:
-                json.dump(data, file, indent=4)
-                messagebox.showinfo(title="Success", message="Your entry was saved successfully.")
+            if web_entry in data:
+                answer = messagebox.askokcancel(title=f"{web_entry} exist", message=f"{web_entry} already exists.")
+                if answer:
+                    data.update(new_data)
+                    with open('data.json', 'w') as file:
+                        json.dump(data, file, indent=4)
+                        messagebox.showinfo(title="Success", message="Your entry was saved successfully.")
+            else:
+                data.update(new_data)
+                with open('data.json', 'w') as file:
+                    json.dump(data, file, indent=4)
+                    messagebox.showinfo(title="Success", message="Your entry was saved successfully.")
         finally:
             website_entry.delete(0, END)
             user_entry.delete(0, END)
@@ -77,7 +84,21 @@ def save():
 
 # ---------------------------- SEARCH DATA --------------------------- #
 def find_data():
-    pass
+    web_entry = website_entry.get().lower()
+    try:
+        with open('data.json', 'r') as file:
+            search_file = json.load(file)
+    except FileNotFoundError:
+        messagebox.showwarning(title="Error", message="No data file found.")
+    else:
+        if web_entry in search_file:
+            email = search_file[web_entry]["Email"]
+            password = search_file[web_entry]["Password"]
+            messagebox.showinfo(title=web_entry, message=f"Email: {email}\nPassword: {password}"
+                                                         f"\n--Password copied to clipboard--")
+            pc.copy(password)
+        else:
+            messagebox.showwarning(title="No Entry", message=f"No details for {web_entry} Found.")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
