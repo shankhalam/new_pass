@@ -109,11 +109,11 @@ def find_data():
 window = Tk()
 window.title("New Pass - Password Manager")
 window.config(padx=50, pady=50)
-window.iconbitmap("icon.ico")
+window.iconbitmap("assets/icon.ico")
 
 # Canvas
 canvas = Canvas(width=200, height=200)
-logo_image = PhotoImage(file="newpass_img.png")
+logo_image = PhotoImage(file="assets/newpass_img.png")
 canvas.create_image(100, 100, image=logo_image)
 canvas.grid(row=0, column=1, pady=10)
 
