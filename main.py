@@ -109,6 +109,7 @@ def find_data():
 window = Tk()
 window.title("New Pass - Password Manager")
 window.config(padx=50, pady=50)
+window.resizable(False, False)
 window.iconbitmap("assets/icon.ico")
 
 # Canvas
