@@ -4,3 +4,4 @@ project_assets
 /data.txt
 /data.json
 /output/
+.venv
